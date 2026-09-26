@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThreadMix Auto DJ</title>
+<meta name="description" content="A DJ that runs itself. Point it at your music and it plays one continuous, beatmatched mix, all night. Free for Windows.">
+<meta property="og:title" content="ThreadMix Auto DJ">
+<meta property="og:description" content="A DJ that runs itself. Point it at your music and it plays one continuous, beatmatched mix.">
+<meta property="og:image" content="https://logge.github.io/threadmix/assets/shots/light-cycles.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --bg-2: #121720;
+    --card: #161c26;
+    --line: #232b37;
+    --text: #dfe4ea;
+    --dim: #8e98a6;
+    --cyan: #4fc3f7;
+    --orange: #ff8a65;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 72px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  h2 { font-size: 28px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .lede { color: var(--dim); margin: 0 0 32px; max-width: 640px; }
+
+  /* ---- header ---- */
+  header { position: sticky; top: 0; z-index: 10; background: rgba(12, 15, 20, 0.85);
+           backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  header .wrap { display: flex; align-items: center; gap: 12px; height: 60px; }
+  header img { width: 30px; height: 30px; }
+  header .name { font-weight: 700; letter-spacing: 0.01em; }
+  header nav { margin-left: auto; display: flex; gap: 22px; font-size: 15px; }
+  header nav a { color: var(--dim); }
+  header nav a:hover { color: var(--text); text-decoration: none; }
+
+  /* ---- hero ---- */
+  .hero { padding: 72px 0 56px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: -200px -10% auto; height: 600px; z-index: -1;
+    background: radial-gradient(closest-side at 30% 50%, rgba(79,195,247,0.16), transparent),
+                radial-gradient(closest-side at 70% 40%, rgba(255,138,101,0.12), transparent);
+  }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 44px; align-items: center; }
+  .hero h1 { font-size: 52px; line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.02em; }
+  .hero h1 .accent {
+    background: linear-gradient(90deg, var(--cyan), var(--orange));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { font-size: 19px; color: var(--dim); margin: 0 0 28px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 10px;
+    font-weight: 600; font-size: 16px; border: 1px solid var(--line); color: var(--text);
+    background: var(--card);
+  }
+  .btn:hover { text-decoration: none; border-color: #36414f; }
+  .btn.primary { background: var(--cyan); color: #06222f; border-color: transparent; }
+  .btn.primary:hover { background: #6fcff9; }
+  .btn.disabled { opacity: 0.55; pointer-events: none; }
+  .btn small { font-weight: 500; opacity: 0.75; }
+  .fine { color: var(--dim); font-size: 14px; margin-top: 14px; }
+  .screen {
+    border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.02);
+    aspect-ratio: 16 / 9; background: #000;
+  }
+  .screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ---- features ---- */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--dim); font-size: 15px; }
+  .card .dot { width: 10px; height: 10px; border-radius: 50%; margin-bottom: 14px; }
+  .c { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .o { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+
+  /* ---- gallery ---- */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .gallery a { display: block; position: relative; border-radius: 10px; overflow: hidden;
+               border: 1px solid var(--line); aspect-ratio: 16 / 9; background: #000; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+  .gallery a:hover img { transform: scale(1.04); }
+  .gallery span { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 12px 8px; font-size: 13px;
+                  color: #fff; background: linear-gradient(transparent, rgba(0,0,0,0.75)); }
+
+  /* ---- steps ---- */
+  .how { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; }
+  ol.steps li { counter-increment: s; position: relative; padding: 0 0 22px 48px; color: var(--dim); }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px; width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; color: var(--bg); background: var(--cyan);
+  }
+  ol.steps li:nth-child(even)::before { background: var(--orange); }
+  ol.steps b { color: var(--text); display: block; }
+  .how img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+  .caption { color: var(--dim); font-size: 13px; margin-top: 8px; }
+
+  /* ---- requirements / help ---- */
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 500; width: 190px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 18px; margin-bottom: 10px; }
+  summary { cursor: pointer; padding: 15px 0; font-weight: 600; }
+  details p, details ol, details ul { color: var(--dim); margin-top: 0; }
+  details[open] { padding-bottom: 6px; }
+  code { background: #0a0d12; border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: 14px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--dim); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
+
+  @media (max-width: 860px) {
+    .hero .wrap, .how { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 40px; }
+    .grid, .gallery { grid-template-columns: 1fr 1fr; }
+    header nav { display: none; }
+  }
+  @media (max-width: 540px) {
+    .grid, .gallery { grid-template-columns: 1fr; }
+    section { padding: 52px 0; }
+    th { width: auto; }
+    th, td { display: block; padding: 6px 0; border: 0; }
+    tr { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="assets/favicon.png" alt="">
+    <span class="name">ThreadMix</span>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#visuals">Visuals</a>
+      <a href="#how">How it works</a>
+      <a href="#download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>A DJ that <span class="accent">runs itself.</span></h1>
+      <p>Point ThreadMix at your music. It listens to every track, then plays one
+        continuous mix: it picks what comes next, matches tempo and key, and blends
+        each record into the next the way a DJ would. All night, on your own computer.</p>
+      <div class="buttons">
+        <a class="btn primary" id="dl-win" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
+          Download for Windows <small>1.4 GB</small></a>
+        <span class="btn disabled" id="dl-mac">macOS <small>coming soon</small></span>
+      </div>
+      <div class="fine">Free. No account. Version <span id="ver">0.1.0</span> &middot;
+        <a href="https://github.com/logge/threadmix/releases">all releases</a></div>
+    </div>
+    <div class="screen"><img src="assets/shots/light-cycles.jpg" alt="The light-cycle visualizer: two glowing bikes racing across a neon grid"></div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <p class="lede">Everything a DJ does between records, and some things they don't: the
+      choosing, the mixing, the talking, and a light show.</p>
+    <div class="grid">
+      <div class="card"><div class="dot c"></div><h3>Mixes like a DJ</h3>
+        <p>Beatmatched, key-aware blends. Splits songs into vocals, drums, bass and the rest,
+          for acapella blends, drum swaps and mixes that never talk over the singing.</p></div>
+      <div class="card"><div class="dot o"></div><h3>Talk to it</h3>
+        <p>Type "keep it deep", "take it to peak time" or "plan a three-hour party that starts
+          chilled", and it shapes the night to match.</p></div>
+      <div class="card"><div class="dot c"></div><h3>A voice on the mic</h3>
+        <p>Between songs the DJ says a line out loud, over the music, and has something to say
+          about the record that's playing.</p></div>
+      <div class="card"><div class="dot o"></div><h3>Knows the words</h3>
+        <p>Transcribes lyrics, for a lyrics visualizer and a keep-it-clean mode that skips
+          explicit songs.</p></div>
+      <div class="card"><div class="dot c"></div><h3>A light show</h3>
+        <p>More than a dozen visualizers that move with the music, and a party view big enough
+          to read from across the room.</p></div>
+      <div class="card"><div class="dot o"></div><h3>Stays on your computer</h3>
+        <p>Your music and everything the AI does stay on your machine. The models download once;
+          nothing you play is sent anywhere.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="visuals">
+  <div class="wrap">
+    <h2>Visuals</h2>
+    <p class="lede">Each one reacts to the beat, the bass and the vocals, and they change on their
+      own through the night. A few of them:</p>
+    <div class="gallery">
+      <a href="assets/shots/pirates.jpg"><img src="assets/shots/pirates-small.jpg" alt="A pixel-art pirate harbour" loading="lazy"><span>Pirate harbour</span></a>
+      <a href="assets/shots/light-cycles.jpg"><img src="assets/shots/light-cycles-small.jpg" alt="Light cycles on a neon grid" loading="lazy"><span>Light cycles</span></a>
+      <a href="assets/shots/turntable.jpg"><img src="assets/shots/turntable-small.jpg" alt="A turntable with a spinning record" loading="lazy"><span>Turntable</span></a>
+      <a href="assets/shots/aurora.jpg"><img src="assets/shots/aurora-small.jpg" alt="Northern lights over a lake" loading="lazy"><span>Aurora</span></a>
+      <a href="assets/shots/lava-lamp.jpg"><img src="assets/shots/lava-lamp-small.jpg" alt="A lava lamp" loading="lazy"><span>Lava lamp</span></a>
+      <a href="assets/shots/soda-can.jpg"><img src="assets/shots/soda-can-small.jpg" alt="A cola can with ice cubes" loading="lazy"><span>Soda can</span></a>
+      <a href="assets/shots/ink.jpg"><img src="assets/shots/ink-small.jpg" alt="Coloured ink swirling in water" loading="lazy"><span>Ink in water</span></a>
+      <a href="assets/shots/oscilloscope.jpg"><img src="assets/shots/oscilloscope-small.jpg" alt="A green oscilloscope screen" loading="lazy"><span>Oscilloscope</span></a>
+      <a href="assets/shots/tunnel.jpg"><img src="assets/shots/tunnel-small.jpg" alt="A tunnel made of the music's spectrum" loading="lazy"><span>Spectrum tunnel</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap how">
+    <div>
+      <h2>How it works</h2>
+      <p class="lede">Four steps, and the first one only happens once.</p>
+      <ol class="steps">
+        <li><b>Choose your music folder</b>ThreadMix scans it in the background for tempo, key,
+          beats, energy and where the vocals are. The first scan takes minutes for a few albums and
+          hours for a big collection, but you can start as soon as the first tracks are done.</li>
+        <li><b>Press Start set</b>The DJ picks the records, beatmatches them and mixes them in.
+          Thumbs up or down on a track steers what it plays.</li>
+        <li><b>Talk to it</b>Ask for a mood, an energy, or a whole evening planned out.</li>
+        <li><b>Press Party</b>Big visuals and what's playing, for a screen at the party.</li>
+      </ol>
+    </div>
+    <div>
+      <img src="assets/shots/welcome.png" alt="The welcome screen: choose a music folder and pick which AI models to download" loading="lazy">
+      <div class="caption">The first launch asks for your music folder and offers the AI models, with
+        what each one adds and how big it is.</div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2>Download</h2>
+    <p class="lede">The installer has the app. The AI models are optional and download from inside
+      the app on first launch, from each model's publisher.</p>
+    <div class="buttons" style="margin-bottom: 36px">
+      <a class="btn primary" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
+        Download for Windows <small>1.4 GB</small></a>
+      <span class="btn disabled">macOS <small>coming soon</small></span>
+    </div>
+
+    <table>
+      <tr><th>Windows</th><td>Windows 10 or 11, 64-bit.</td></tr>
+      <tr><th>macOS</th><td>Coming soon, for Apple Silicon Macs (M1 or later) on macOS 14 or later.</td></tr>
+      <tr><th>Graphics</th><td>An NVIDIA card (RTX 20-series or newer, with a recent driver) makes the AI
+        parts much faster. Without one, everything still works, just slower.</td></tr>
+      <tr><th>Memory</th><td>8 GB to play. 16 GB for the DJ's brain, the language model that
+        chats, plans and talks between songs.</td></tr>
+      <tr><th>Disk space</th><td>About 2 GB for the app, up to 8 GB for the models, and about 20 MB for
+        each song it splits into stems.</td></tr>
+      <tr><th>Music</th><td>MP3, FLAC, WAV and OGG files, in any folder layout.</td></tr>
+    </table>
+
+    <h3 style="margin-top: 44px">Installing</h3>
+    <details>
+      <summary>Windows says "Windows protected your PC"</summary>
+      <p>That's SmartScreen being careful with an app it hasn't seen many downloads of yet. Click
+        <b>More info</b>, then <b>Run anyway</b>.</p>
+    </details>
+    <details>
+      <summary>Which AI models should I download?</summary>
+      <p>The welcome screen offers four, and ticks the ones that suit your computer:</p>
+      <ul>
+        <li><b>A better DJ</b> (680 MB): beat tracking, stem separation and a sound fingerprint.
+          Worth it for everyone.</li>
+        <li><b>Lyrics</b> (150 MB): for the lyrics visualizer and keep-it-clean.</li>
+        <li><b>A voice for the DJ</b> (350 MB): so it talks out loud.</li>
+        <li><b>The DJ's brain</b> (6.7 GB): chat, party planning and what it says between songs.
+          Google's Gemma model, so you accept Google's
+          <a href="https://ai.google.dev/gemma/terms">Gemma terms</a> to download it.</li>
+      </ul>
+      <p>You can change your mind later in Settings &gt; Manage models.</p>
+    </details>
+    <details>
+      <summary>Where does it keep things?</summary>
+      <p>Your library file and the separated stems go in a <code>stems</code> folder inside your
+        music folder. The models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the settings in
+        <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app; delete those
+        folders too to remove everything.</p>
+    </details>
+  </div>
+</section>
+
+<section id="source">
+  <div class="wrap">
+    <h2>Free software</h2>
+    <p class="lede" style="margin-bottom: 18px">ThreadMix is built on open-source software, and the complete
+      source code of each version is attached to its release on GitHub.</p>
+    <div class="buttons" style="margin-bottom: 28px">
+      <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-source.zip">Source code (zip)</a>
+    </div>
+    <details>
+      <summary>Licences</summary>
+      <p>The app is distributed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a>
+        (it is built with <a href="https://juce.com">JUCE</a>), and its library scanner under the
+        <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU GPL v2</a> (it uses
+        <a href="https://github.com/c4dm/qm-dsp">QM-DSP</a>). It also includes
+        <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> and
+        <a href="https://github.com/ggml-org/whisper.cpp">whisper.cpp</a> (MIT),
+        <a href="https://onnxruntime.ai">ONNX Runtime</a> (MIT),
+        <a href="https://github.com/espeak-ng/espeak-ng">espeak-ng</a> (GPL v3), SQLite (public domain),
+        and NVIDIA's CUDA and cuDNN runtime libraries under NVIDIA's redistribution terms.</p>
+      <p>The downloadable models keep their own licences, shown in the app before each download:
+        Beat This! (MIT), HT-Demucs (MIT), CLAP (Apache 2.0), Whisper (MIT), Kokoro (Apache 2.0)
+        and Gemma (Gemma Terms of Use).</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>ThreadMix Auto DJ</span>
+    <a href="https://github.com/logge/threadmix/releases">Releases</a>
+    <a href="https://github.com/logge/threadmix/issues">Report a problem</a>
+  </div>
+</footer>
+
+<script>
+  // Show the version of the newest release, so the page does not need editing
+  // for each one. The buttons already point at "latest"; this is only the label.
+  fetch("https://api.github.com/repos/logge/threadmix/releases/latest")
+    .then(r => r.ok ? r.json() : null)
+    .then(r => { if (r && r.tag_name) document.getElementById("ver").textContent = r.tag_name.replace(/^v/, ""); })
+    .catch(() => {});
+</script>
+</body>
+</html>
