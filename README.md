@@ -16,5 +16,6 @@ download links (`releases/latest/download/<name>`) never need editing:
 | Asset | What |
 |---|---|
 | `ThreadMix-Windows-Setup.exe` | Windows installer |
+| `ThreadMix-Linux-x86_64.AppImage` | Linux AppImage (x86-64) |
 | `ThreadMix-macOS.dmg` | Mac disk image (not yet) |
 | `ThreadMix-source.zip` | Complete source of that version |
