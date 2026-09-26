@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ThreadMix Auto DJ</title>
-<meta name="description" content="A DJ that runs itself. Point it at your music and it plays one continuous, beatmatched mix, all night. Free for Windows.">
+<meta name="description" content="A DJ that runs itself. Point it at your music and it plays one continuous, beatmatched mix, all night. Free for Windows and Linux.">
 <meta property="og:title" content="ThreadMix Auto DJ">
 <meta property="og:description" content="A DJ that runs itself. Point it at your music and it plays one continuous, beatmatched mix.">
 <meta property="og:image" content="https://logge.github.io/threadmix/assets/shots/light-cycles.jpg">
@@ -165,6 +165,8 @@
       <div class="buttons">
         <a class="btn primary" id="dl-win" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
           Download for Windows <small>1.4 GB</small></a>
+        <a class="btn" id="dl-linux" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
+          Linux <small>beta &middot; 23 MB</small></a>
         <span class="btn disabled" id="dl-mac">macOS <small>coming soon</small></span>
       </div>
       <div class="fine">Free. No account. Version <span id="ver">0.1.0</span> &middot;
@@ -247,23 +249,28 @@
 <section id="download">
   <div class="wrap">
     <h2>Download</h2>
-    <p class="lede">The installer has the app. The AI models are optional and download from inside
+    <p class="lede">The download has the app. The AI models are optional and download from inside
       the app on first launch, from each model's publisher.</p>
     <div class="buttons" style="margin-bottom: 36px">
       <a class="btn primary" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
         Download for Windows <small>1.4 GB</small></a>
+      <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
+        Download for Linux <small>beta &middot; 23 MB</small></a>
       <span class="btn disabled">macOS <small>coming soon</small></span>
     </div>
 
     <table>
       <tr><th>Windows</th><td>Windows 10 or 11, 64-bit.</td></tr>
+      <tr><th>Linux (beta)</th><td>64-bit PC: Ubuntu 24.04, Debian 13, Fedora 39 or newer, or a
+        distribution based on one, such as Linux Mint 22. A processor from 2013 or later (with AVX2).</td></tr>
       <tr><th>macOS</th><td>Coming soon, for Apple Silicon Macs (M1 or later) on macOS 14 or later.</td></tr>
-      <tr><th>Graphics</th><td>An NVIDIA card (RTX 20-series or newer, with a recent driver) makes the AI
-        parts much faster. Without one, everything still works, just slower.</td></tr>
+      <tr><th>Graphics</th><td>On Windows, an NVIDIA card (RTX 20-series or newer, with a recent driver)
+        makes the AI parts much faster. Without one, everything still works, just slower. On Linux the
+        AI parts run on the processor.</td></tr>
       <tr><th>Memory</th><td>8 GB to play. 16 GB for the DJ's brain, the language model that
         chats, plans and talks between songs.</td></tr>
-      <tr><th>Disk space</th><td>About 2 GB for the app, up to 8 GB for the models, and about 20 MB for
-        each song it splits into stems.</td></tr>
+      <tr><th>Disk space</th><td>About 2 GB for the app on Windows (23 MB on Linux), up to 8 GB for the
+        models, and about 20 MB for each song it splits into stems.</td></tr>
       <tr><th>Music</th><td>MP3, FLAC, WAV and OGG files, in any folder layout.</td></tr>
     </table>
 
@@ -272,6 +279,18 @@
       <summary>Windows says "Windows protected your PC"</summary>
       <p>That's SmartScreen being careful with an app it hasn't seen many downloads of yet. Click
         <b>More info</b>, then <b>Run anyway</b>.</p>
+    </details>
+    <details>
+      <summary>Running it on Linux</summary>
+      <p>The Linux download is an AppImage: one file, nothing to install. Make it executable and start it,
+        from the file manager (Properties &gt; Permissions &gt; <b>Allow executing file as program</b>,
+        then double-click) or from a terminal:</p>
+      <p><code>chmod +x ThreadMix-Linux-x86_64.AppImage</code><br>
+        <code>./ThreadMix-Linux-x86_64.AppImage</code></p>
+      <p>If it says no suitable <code>fusermount</code> was found, install FUSE
+        (<code>sudo apt install fuse3</code>, or <code>fuse3</code> from your distribution), or start it
+        with <code>APPIMAGE_EXTRACT_AND_RUN=1</code> in front. It plays through your system's sound
+        (PipeWire or PulseAudio), and downloads the models with your system's curl.</p>
     </details>
     <details>
       <summary>Which AI models should I download?</summary>
@@ -290,9 +309,10 @@
     <details>
       <summary>Where does it keep things?</summary>
       <p>Your library file and the separated stems go in a <code>stems</code> folder inside your
-        music folder. The models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the settings in
-        <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app; delete those
-        folders too to remove everything.</p>
+        music folder. On Windows the models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the
+        settings in <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app;
+        delete those folders too to remove everything. On Linux both go in <code>~/.config/BeatMix</code>;
+        to remove everything, delete the AppImage and that folder.</p>
     </details>
   </div>
 </section>
@@ -316,9 +336,11 @@
         <a href="https://github.com/ggml-org/whisper.cpp">whisper.cpp</a>,
         <a href="https://onnxruntime.ai">ONNX Runtime</a>, Signalsmith Stretch and libebur128 (MIT),
         <a href="https://github.com/espeak-ng/espeak-ng">espeak-ng</a> (GPL v3 or later), libvorbis (BSD),
-        dr_libs, stb and SQLite (public domain), and NVIDIA's CUDA and cuDNN runtime libraries under
-        NVIDIA's redistribution terms. The full list is in the <code>licenses</code> folder next to the
-        app, and in the source code.</p>
+        dr_libs, stb and SQLite (public domain), and on Windows NVIDIA's CUDA and cuDNN runtime libraries
+        under NVIDIA's redistribution terms. On Linux it uses the system's ALSA and libcurl, and the
+        AppImage carries a few of the system's libraries, each with its licence. The full list is in the
+        <code>licenses</code> folder next to the app on Windows, inside the AppImage on Linux, and in the
+        source code.</p>
       <p>The downloadable models keep their own licences, shown in the app before each download:
         Beat This! (MIT), HT-Demucs (MIT), CLAP (Apache 2.0), Whisper (MIT), Kokoro (Apache 2.0)
         and Gemma (Gemma Terms of Use).</p>
