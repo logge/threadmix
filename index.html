@@ -261,8 +261,9 @@
 
     <table>
       <tr><th>Windows</th><td>Windows 10 or 11, 64-bit.</td></tr>
-      <tr><th>Linux (beta)</th><td>64-bit PC: Ubuntu 24.04, Debian 13, Fedora 39 or newer, or a
-        distribution based on one, such as Linux Mint 22. A processor from 2013 or later (with AVX2).</td></tr>
+      <tr><th>Linux (beta)</th><td>64-bit PC: Ubuntu 22.04, Debian 12, Fedora 36 or newer, or a
+        distribution based on one, such as Linux Mint 21 or Pop!_OS 22.04. The AI parts need a processor
+        from 2013 or later (with AVX2); without one the DJ plays without its language model.</td></tr>
       <tr><th>macOS</th><td>Coming soon, for Apple Silicon Macs (M1 or later) on macOS 14 or later.</td></tr>
       <tr><th>Graphics</th><td>On Windows, an NVIDIA card (RTX 20-series or newer, with a recent driver)
         makes the AI parts much faster. Without one, everything still works, just slower. On Linux the
@@ -282,15 +283,21 @@
     </details>
     <details>
       <summary>Running it on Linux</summary>
-      <p>The Linux download is an AppImage: one file, nothing to install. Make it executable and start it,
-        from the file manager (Properties &gt; Permissions &gt; <b>Allow executing file as program</b>,
-        then double-click) or from a terminal:</p>
+      <p>The Linux download is an AppImage: one file, nothing to install. A downloaded file is not
+        allowed to run until you make it executable, so double-clicking it straight away does nothing
+        useful. Make it executable, then double-click it:</p>
+      <p>GNOME (Files): right-click it &gt; Properties &gt; turn on <b>Executable as Program</b>.<br>
+        KDE (Dolphin): right-click it &gt; Properties &gt; Permissions &gt; tick <b>Allow executing file
+        as program</b>.<br>
+        Or from a terminal:</p>
       <p><code>chmod +x ThreadMix-Linux-x86_64.AppImage</code><br>
         <code>./ThreadMix-Linux-x86_64.AppImage</code></p>
       <p>If it says no suitable <code>fusermount</code> was found, install FUSE
         (<code>sudo apt install fuse3</code>, or <code>fuse3</code> from your distribution), or start it
         with <code>APPIMAGE_EXTRACT_AND_RUN=1</code> in front. It plays through your system's sound
-        (PipeWire or PulseAudio), and downloads the models with your system's curl.</p>
+        (PipeWire or PulseAudio), and downloads the models with your system's curl. If it cannot start
+        on your system, it says why in a window and in
+        <code>~/.config/BeatMix/logs/startup-error.txt</code>.</p>
     </details>
     <details>
       <summary>Which AI models should I download?</summary>
