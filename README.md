@@ -17,5 +17,6 @@ download links (`releases/latest/download/<name>`) never need editing:
 |---|---|
 | `ThreadMix-Windows-Setup.exe` | Windows installer |
 | `ThreadMix-Linux-x86_64.AppImage` | Linux AppImage (x86-64) |
-| `ThreadMix-macOS.dmg` | Mac disk image (not yet) |
+| `ThreadMix-macOS.zip` | Mac app, zipped (Apple Silicon) |
 | `ThreadMix-source.zip` | Complete source of that version |
+| `ThreadMix-macOS-source.zip` | Source of the Mac app, when it was built from a different commit |

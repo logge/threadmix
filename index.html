@@ -167,7 +167,8 @@
           Download for Windows <small>1.4 GB</small></a>
         <a class="btn" id="dl-linux" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
           Linux <small>beta &middot; 23 MB</small></a>
-        <span class="btn disabled" id="dl-mac">macOS <small>coming soon</small></span>
+        <a class="btn" id="dl-mac" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-macOS.zip">
+          macOS <small>Apple Silicon &middot; 77 MB</small></a>
       </div>
       <div class="fine">Free. No account. Version <span id="ver">0.1.0</span> &middot;
         <a href="https://github.com/logge/threadmix/releases">all releases</a></div>
@@ -256,7 +257,8 @@
         Download for Windows <small>1.4 GB</small></a>
       <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
         Download for Linux <small>beta &middot; 23 MB</small></a>
-      <span class="btn disabled">macOS <small>coming soon</small></span>
+      <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-macOS.zip">
+        Download for macOS <small>Apple Silicon &middot; 77 MB</small></a>
     </div>
 
     <table>
@@ -264,13 +266,13 @@
       <tr><th>Linux (beta)</th><td>64-bit PC: Ubuntu 22.04, Debian 12, Fedora 36 or newer, or a
         distribution based on one, such as Linux Mint 21 or Pop!_OS 22.04. The AI parts need a processor
         from 2013 or later (with AVX2); without one the DJ plays without its language model.</td></tr>
-      <tr><th>macOS</th><td>Coming soon, for Apple Silicon Macs (M1 or later) on macOS 14 or later.</td></tr>
+      <tr><th>macOS</th><td>A Mac with Apple Silicon (M1 or later), macOS 14 or later.</td></tr>
       <tr><th>Graphics</th><td>On Windows, an NVIDIA card (RTX 20-series or newer, with a recent driver)
         makes the AI parts much faster. Without one, everything still works, just slower. On Linux the
         AI parts run on the processor.</td></tr>
       <tr><th>Memory</th><td>8 GB to play. 16 GB for the DJ's brain, the language model that
         chats, plans and talks between songs.</td></tr>
-      <tr><th>Disk space</th><td>About 2 GB for the app on Windows (23 MB on Linux), up to 8 GB for the
+      <tr><th>Disk space</th><td>About 2 GB for the app on Windows (23 MB on Linux, 275 MB on a Mac), up to 8 GB for the
         models, and about 20 MB for each song it splits into stems.</td></tr>
       <tr><th>Music</th><td>MP3, FLAC, WAV and OGG files, in any folder layout.</td></tr>
     </table>
@@ -300,6 +302,18 @@
         <code>~/.config/BeatMix/logs/startup-error.txt</code>.</p>
     </details>
     <details>
+      <summary>Opening it on a Mac</summary>
+      <p>Open the downloaded zip if your browser has not already, and drag <b>ThreadMix</b> into your
+        Applications folder. The app is not signed by Apple yet, so the first time you open it macOS
+        stops it:</p>
+      <p>If it says Apple could not verify ThreadMix, click <b>Done</b>, then go to System Settings &gt;
+        Privacy &amp; Security, scroll down and click <b>Open Anyway</b> next to ThreadMix, and
+        confirm.</p>
+      <p>If it says ThreadMix "is damaged and can't be opened", it is not damaged: macOS says this
+        about apps that are not signed. Open Terminal and run
+        <code>xattr -dr com.apple.quarantine /Applications/ThreadMix.app</code>, then open it again.</p>
+    </details>
+    <details>
       <summary>Which AI models should I download?</summary>
       <p>The welcome screen offers four, and ticks the ones that suit your computer:</p>
       <ul>
@@ -319,7 +333,9 @@
         music folder. On Windows the models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the
         settings in <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app;
         delete those folders too to remove everything. On Linux both go in <code>~/.config/BeatMix</code>;
-        to remove everything, delete the AppImage and that folder.</p>
+        to remove everything, delete the AppImage and that folder. On a Mac both go in
+        <code>~/Library/Application Support/BeatMix</code>; to remove everything, move the app and that
+        folder to the Trash.</p>
     </details>
   </div>
 </section>
@@ -346,8 +362,8 @@
         dr_libs, stb and SQLite (public domain), and on Windows NVIDIA's CUDA and cuDNN runtime libraries
         under NVIDIA's redistribution terms. On Linux it uses the system's ALSA and libcurl, and the
         AppImage carries a few of the system's libraries, each with its licence. The full list is in the
-        <code>licenses</code> folder next to the app on Windows, inside the AppImage on Linux, and in the
-        source code.</p>
+        <code>licenses</code> folder next to the app on Windows, inside the AppImage on Linux, inside the
+        app on a Mac (Contents/Resources), and in the source code.</p>
       <p>The downloadable models keep their own licences, shown in the app before each download:
         Beat This! (MIT), HT-Demucs (MIT), CLAP (Apache 2.0), Whisper (MIT), Kokoro (Apache 2.0)
         and Gemma (Gemma Terms of Use).</p>
