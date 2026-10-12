@@ -165,8 +165,8 @@
       <div class="buttons">
         <a class="btn primary" id="dl-win" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
           Download for Windows <small>1.4 GB</small></a>
-        <a class="btn" id="dl-linux" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
-          Linux <small>beta &middot; 23 MB</small></a>
+        <a class="btn" id="dl-linux" href="#download">
+          Linux <small>beta</small></a>
         <a class="btn" id="dl-mac" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-macOS.zip">
           macOS <small>Apple Silicon &middot; 77 MB</small></a>
       </div>
@@ -255,8 +255,10 @@
     <div class="buttons" style="margin-bottom: 36px">
       <a class="btn primary" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Windows-Setup.exe">
         Download for Windows <small>1.4 GB</small></a>
+      <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-Vulkan-x86_64.AppImage">
+        Download for Linux <small>beta &middot; 61 MB</small></a>
       <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-Linux-x86_64.AppImage">
-        Download for Linux <small>beta &middot; 23 MB</small></a>
+        Linux, processor only <small>24 MB</small></a>
       <a class="btn" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-macOS.zip">
         Download for macOS <small>Apple Silicon &middot; 77 MB</small></a>
     </div>
@@ -269,10 +271,12 @@
       <tr><th>macOS</th><td>A Mac with Apple Silicon (M1 or later), macOS 14 or later.</td></tr>
       <tr><th>Graphics</th><td>On Windows, an NVIDIA card (RTX 20-series or newer, with a recent driver)
         makes the AI parts much faster. Without one, everything still works, just slower. On Linux the
-        AI parts run on the processor.</td></tr>
+        graphics-card download runs the DJ's brain and the lyrics on any card with a Vulkan driver
+        (AMD, Intel or NVIDIA), and falls back to the processor without one; the processor-only
+        download is smaller and always uses the processor.</td></tr>
       <tr><th>Memory</th><td>8 GB to play. 16 GB for the DJ's brain, the language model that
         chats, plans and talks between songs.</td></tr>
-      <tr><th>Disk space</th><td>About 2 GB for the app on Windows (23 MB on Linux, 275 MB on a Mac), up to 8 GB for the
+      <tr><th>Disk space</th><td>About 2 GB for the app on Windows (24 to 61 MB on Linux, 275 MB on a Mac), up to 8 GB for the
         models, and about 20 MB for each song it splits into stems.</td></tr>
       <tr><th>Music</th><td>MP3, FLAC, WAV and OGG files, in any folder layout.</td></tr>
     </table>
@@ -285,15 +289,19 @@
     </details>
     <details>
       <summary>Running it on Linux</summary>
-      <p>The Linux download is an AppImage: one file, nothing to install. A downloaded file is not
+      <p>There are two Linux downloads. Take the graphics-card one unless you know the computer
+        has no graphics card worth the name: it runs the AI parts on the card through Vulkan, which
+        every current desktop's graphics driver includes, and on the processor where there is none.
+        The processor-only one is the same app, smaller, and never touches the card.</p>
+      <p>Either is an AppImage: one file, nothing to install. A downloaded file is not
         allowed to run until you make it executable, so double-clicking it straight away does nothing
         useful. Make it executable, then double-click it:</p>
       <p>GNOME (Files): right-click it &gt; Properties &gt; turn on <b>Executable as Program</b>.<br>
         KDE (Dolphin): right-click it &gt; Properties &gt; Permissions &gt; tick <b>Allow executing file
         as program</b>.<br>
         Or from a terminal:</p>
-      <p><code>chmod +x ThreadMix-Linux-x86_64.AppImage</code><br>
-        <code>./ThreadMix-Linux-x86_64.AppImage</code></p>
+      <p><code>chmod +x ThreadMix-Linux-*.AppImage</code><br>
+        <code>./ThreadMix-Linux-Vulkan-x86_64.AppImage</code></p>
       <p>If it says no suitable <code>fusermount</code> was found, install FUSE
         (<code>sudo apt install fuse3</code>, or <code>fuse3</code> from your distribution), or start it
         with <code>APPIMAGE_EXTRACT_AND_RUN=1</code> in front. It plays through your system's sound

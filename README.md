@@ -16,7 +16,13 @@ download links (`releases/latest/download/<name>`) never need editing:
 | Asset | What |
 |---|---|
 | `ThreadMix-Windows-Setup.exe` | Windows installer |
-| `ThreadMix-Linux-x86_64.AppImage` | Linux AppImage (x86-64) |
+| `ThreadMix-Linux-Vulkan-x86_64.AppImage` | Linux AppImage (x86-64), AI on the GPU through Vulkan |
+| `ThreadMix-Linux-x86_64.AppImage` | Linux AppImage (x86-64), AI on the processor only |
 | `ThreadMix-macOS.zip` | Mac app, zipped (Apple Silicon) |
 | `ThreadMix-source.zip` | Complete source of that version |
 | `ThreadMix-macOS-source.zip` | Source of the Mac app, when it was built from a different commit |
+| `ThreadMix-Linux-source.zip` | Source of the Linux AppImages, when they were built from a different commit |
+
+`scripts/make-appimage.sh` names its images with the version
+(`ThreadMix-0.1.1-x86_64.AppImage`, `ThreadMix-0.1.1-vulkan-x86_64.AppImage`);
+rename them to the names above when uploading.
