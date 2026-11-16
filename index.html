@@ -170,7 +170,7 @@
         <a class="btn" id="dl-mac" href="https://github.com/logge/threadmix/releases/latest/download/ThreadMix-macOS.zip">
           macOS <small>Apple Silicon &middot; 77 MB</small></a>
       </div>
-      <div class="fine">Free. No account. Version <span id="ver">0.2.0</span> &middot;
+      <div class="fine">Free. No account. Version <span id="ver">0.3.0</span> &middot;
         <a href="https://github.com/logge/threadmix/releases">all releases</a></div>
     </div>
     <div class="screen"><img src="assets/shots/light-cycles.jpg" alt="The light-cycle visualizer: two glowing bikes racing across a neon grid"></div>
@@ -340,13 +340,18 @@
     </details>
     <details>
       <summary>Where does it keep things?</summary>
-      <p>Your library file and the separated stems go in a <code>stems</code> folder inside your
-        music folder. On Windows the models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the
-        settings in <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app;
-        delete those folders too to remove everything. On Linux both go in <code>~/.config/BeatMix</code>;
-        to remove everything, delete the AppImage and that folder. On a Mac both go in
-        <code>~/Library/Application Support/BeatMix</code>; to remove everything, move the app and that
-        folder to the Trash.</p>
+      <p>Your music folder is only read. The library and the separated stems go in a data folder
+        of their own, which you choose on the first launch and can move in Settings &gt; Library.
+        On Windows that is <code>%LOCALAPPDATA%\BeatMix\Library</code> unless you choose another, the
+        models go in <code>%LOCALAPPDATA%\BeatMix\models</code>, and the settings in
+        <code>%APPDATA%\BeatMix</code>. Uninstalling from Windows Settings removes the app; delete
+        those folders too to remove everything. On Linux all three go in
+        <code>~/.config/BeatMix</code>; to remove everything, delete the AppImage and that folder
+        (and the data folder, if you moved it).</p>
+      <p>The Mac version is an older one, which still keeps its library file and a
+        <code>stems</code> folder inside your music folder. Its models and settings go in
+        <code>~/Library/Application Support/BeatMix</code>; to remove everything, move the app and
+        that folder to the Trash.</p>
     </details>
   </div>
 </section>
